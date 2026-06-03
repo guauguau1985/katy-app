@@ -25,6 +25,8 @@
     --green: #5ce0a0;
     --teal: #4ecdc4;
     --teal-glow: rgba(78,205,196,0.15);
+    --green-gpt: #10a37f;
+    --green-gpt-glow: rgba(16,163,127,0.15);
   }
 
   html, body {
@@ -111,6 +113,11 @@
     color: var(--teal);
   }
 
+  .model-btn.active-gpt {
+    background: var(--green-gpt-glow);
+    color: var(--green-gpt);
+  }
+
   .model-dot {
     display: inline-block;
     width: 5px;
@@ -124,6 +131,7 @@
 
   .model-btn.active-claude .model-dot { background: var(--accent); }
   .model-btn.active-deepseek .model-dot { background: var(--teal); }
+  .model-btn.active-gpt .model-dot { background: var(--green-gpt); }
 
   .header-right {
     display: flex;
@@ -178,6 +186,11 @@
     color: rgba(78,205,196,0.6);
   }
 
+  .model-banner.gpt {
+    background: rgba(16,163,127,0.05);
+    color: rgba(16,163,127,0.6);
+  }
+
   .model-banner-dot {
     width: 5px; height: 5px;
     border-radius: 50%;
@@ -186,6 +199,7 @@
 
   .model-banner.claude .model-banner-dot { background: var(--accent); }
   .model-banner.deepseek .model-banner-dot { background: var(--teal); }
+  .model-banner.gpt .model-banner-dot { background: var(--green-gpt); }
 
   @keyframes blinkDot {
     0%, 100% { opacity: 0.4; }
@@ -220,6 +234,7 @@
 
   .settings-label.claude-label { color: rgba(200,169,110,0.6); }
   .settings-label.deepseek-label { color: rgba(78,205,196,0.6); }
+  .settings-label.gpt-label { color: rgba(16,163,127,0.6); }
 
   .settings-input {
     background: var(--bg);
@@ -236,6 +251,7 @@
   .settings-input:focus { border-color: var(--accent); }
 
   .settings-input.deepseek-input:focus { border-color: var(--teal); }
+  .settings-input.gpt-input:focus { border-color: var(--green-gpt); }
 
   .settings-row { display: flex; gap: 10px; align-items: flex-end; }
   .settings-row .settings-input { flex: 1; }
@@ -312,6 +328,7 @@
 
   .message.user .message-role { color: var(--accent); opacity: 0.7; }
   .message.assistant.by-deepseek .message-role { color: var(--teal); opacity: 0.7; }
+  .message.assistant.by-gpt .message-role { color: var(--green-gpt); opacity: 0.7; }
 
   .message-bubble {
     background: var(--surface);
@@ -333,6 +350,10 @@
 
   .message.assistant.by-deepseek .message-bubble {
     border-color: rgba(78,205,196,0.12);
+  }
+
+  .message.assistant.by-gpt .message-bubble {
+    border-color: rgba(16,163,127,0.12);
   }
 
   /* Thinking */
@@ -591,6 +612,9 @@
       <button class="model-btn" id="btnDeepseek" onclick="setModel('deepseek')">
         <span class="model-dot"></span>DeepSeek
       </button>
+      <button class="model-btn" id="btnGpt" onclick="setModel('gpt')">
+        <span class="model-dot"></span>ChatGPT
+      </button>
     </div>
 
     <div class="header-right">
@@ -621,6 +645,13 @@
     <div class="settings-section">
       <div class="settings-label deepseek-label">API Key — DeepSeek</div>
       <input type="password" class="settings-input deepseek-input" id="deepseekKeyInput" placeholder="sk-...">
+    </div>
+
+    <div class="settings-divider"></div>
+
+    <div class="settings-section">
+      <div class="settings-label gpt-label">API Key — ChatGPT (OpenAI)</div>
+      <input type="password" class="settings-input gpt-input" id="gptKeyInput" placeholder="sk-...">
     </div>
 
     <div class="settings-divider"></div>
@@ -680,6 +711,7 @@
       Necesitas al menos una API Key.<br><br>
       <b style="color:var(--accent)">Claude:</b> <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a><br><br>
       <b style="color:var(--teal)">DeepSeek:</b> <a class="teal" href="https://platform.deepseek.com/api_keys" target="_blank">platform.deepseek.com</a><br><br>
+      <b style="color:var(--green-gpt)">ChatGPT:</b> <a style="color:var(--green-gpt)" href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a><br><br>
       Pégalas en "config" arriba.
     </div>
     <button class="btn-save" onclick="document.getElementById('noApiOverlay').style.display='none'; openSettings()">ir a configuración</button>
@@ -692,10 +724,11 @@
 // ─── State ────────────────────────────────────────────────
 let claudeKey    = localStorage.getItem('kati_claude_key') || '';
 let deepseekKey  = localStorage.getItem('kati_deepseek_key') || '';
+let gptKey       = localStorage.getItem('kati_gpt_key') || '';
 let systemPrompt = localStorage.getItem('kati_system_prompt') ||
   'Eres Kati, asistente personal de Katerine. Responde siempre en español, de forma clara y concisa. Ella vive en Talca, Chile. Trabaja en Lumi (app educativa PWA en React para niños chilenos) y en Lumiara (agencia de automatizaciones con n8n). Sé directa, útil y amigable.';
 let lang         = localStorage.getItem('kati_lang') || 'es-CL';
-let activeModel  = localStorage.getItem('kati_model') || 'claude'; // 'claude' | 'deepseek'
+let activeModel  = localStorage.getItem('kati_model') || 'claude'; // 'claude' | 'deepseek' | 'gpt'
 let conversationHistory = JSON.parse(localStorage.getItem('kati_history') || '[]');
 
 let recognition = null;
@@ -716,6 +749,12 @@ const MODEL_CONFIG = {
     glow:  'var(--teal-glow)',
     label: 'deepseek · chat',
     bannerClass: 'deepseek',
+  },
+  gpt: {
+    color: 'var(--green-gpt)',
+    glow:  'var(--green-gpt-glow)',
+    label: 'chatgpt · gpt-4o',
+    bannerClass: 'gpt',
   }
 };
 
@@ -723,12 +762,13 @@ const MODEL_CONFIG = {
 window.addEventListener('load', () => {
   if (claudeKey)   document.getElementById('claudeKeyInput').value   = claudeKey;
   if (deepseekKey) document.getElementById('deepseekKeyInput').value = deepseekKey;
+  if (gptKey)      document.getElementById('gptKeyInput').value      = gptKey;
   document.getElementById('systemPromptInput').value = systemPrompt;
   document.getElementById('langInput').value = lang;
 
   applyModel(activeModel);
 
-  if (!claudeKey && !deepseekKey) {
+  if (!claudeKey && !deepseekKey && !gptKey) {
     document.getElementById('noApiOverlay').style.display = 'flex';
   } else {
     updateApiStatus(true);
@@ -750,10 +790,11 @@ function setModel(model) {
   applyModel(model);
 
   // Check if we have the key for this model
-  const key = model === 'claude' ? claudeKey : deepseekKey;
+  const key = activeKey();
   if (!key) {
     openSettings();
-    showToast('Agrega la API Key de ' + (model === 'claude' ? 'Claude' : 'DeepSeek') + ' primero', true);
+    const names = { claude: 'Claude', deepseek: 'DeepSeek', gpt: 'ChatGPT' };
+    showToast('Agrega la API Key de ' + names[model] + ' primero', true);
   } else {
     updateApiStatus(true);
   }
@@ -765,8 +806,10 @@ function applyModel(model) {
   // Update switcher buttons
   const btnC = document.getElementById('btnClaude');
   const btnD = document.getElementById('btnDeepseek');
-  btnC.className = 'model-btn' + (model === 'claude'    ? ' active-claude'    : '');
-  btnD.className = 'model-btn' + (model === 'deepseek'  ? ' active-deepseek'  : '');
+  const btnG = document.getElementById('btnGpt');
+  btnC.className = 'model-btn' + (model === 'claude'   ? ' active-claude'   : '');
+  btnD.className = 'model-btn' + (model === 'deepseek' ? ' active-deepseek' : '');
+  btnG.className = 'model-btn' + (model === 'gpt'      ? ' active-gpt'      : '');
 
   // Update banner
   const banner = document.getElementById('modelBanner');
@@ -783,7 +826,10 @@ function applyModel(model) {
 }
 
 function activeKey() {
-  return activeModel === 'claude' ? claudeKey : deepseekKey;
+  if (activeModel === 'claude')   return claudeKey;
+  if (activeModel === 'deepseek') return deepseekKey;
+  if (activeModel === 'gpt')      return gptKey;
+  return '';
 }
 
 // ─── Settings ─────────────────────────────────────────────
@@ -798,11 +844,13 @@ function openSettings() {
 function saveSettings() {
   const ck = document.getElementById('claudeKeyInput').value.trim();
   const dk = document.getElementById('deepseekKeyInput').value.trim();
+  const gk = document.getElementById('gptKeyInput').value.trim();
   const sp = document.getElementById('systemPromptInput').value.trim();
   const l  = document.getElementById('langInput').value;
 
   if (ck) { claudeKey   = ck; localStorage.setItem('kati_claude_key',   ck); }
   if (dk) { deepseekKey = dk; localStorage.setItem('kati_deepseek_key', dk); }
+  if (gk) { gptKey      = gk; localStorage.setItem('kati_gpt_key',      gk); }
   if (sp) { systemPrompt = sp; localStorage.setItem('kati_system_prompt', sp); }
   lang = l; localStorage.setItem('kati_lang', l);
   if (recognition) recognition.lang = lang;
@@ -888,8 +936,10 @@ async function sendMessage(text) {
 
     if (model === 'claude') {
       reply = await callClaude(text);
-    } else {
+    } else if (model === 'deepseek') {
       reply = await callDeepSeek(text);
+    } else {
+      reply = await callGPT(text);
     }
 
     thinkingEl.remove();
@@ -922,7 +972,7 @@ async function callClaude(text) {
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-5',
+      model: 'claude-sonnet-4-20250514',
       max_tokens: 1024,
       system: systemPrompt,
       messages
@@ -958,6 +1008,34 @@ async function callDeepSeek(text) {
   });
 
   if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || 'Error DeepSeek'); }
+  const data = await res.json();
+  return data.choices[0].message.content;
+}
+
+// ─── ChatGPT API ──────────────────────────────────────────
+async function callGPT(text) {
+  const messages = [
+    { role: 'system', content: systemPrompt },
+    ...conversationHistory
+      .slice(-20)
+      .filter(m => m.role === 'user' || m.role === 'assistant')
+      .map(m => ({ role: m.role, content: m.content }))
+  ];
+
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + gptKey
+    },
+    body: JSON.stringify({
+      model: 'gpt-4o',
+      max_tokens: 1024,
+      messages
+    })
+  });
+
+  if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || 'Error ChatGPT'); }
   const data = await res.json();
   return data.choices[0].message.content;
 }
@@ -1033,12 +1111,12 @@ function setOrbState(state) {
 function renderMessage(role, content, model, animate = true) {
   const chatArea = document.getElementById('chatArea');
   const div = document.createElement('div');
-  div.className = 'message ' + role + (role === 'assistant' && model === 'deepseek' ? ' by-deepseek' : '');
+  div.className = 'message ' + role + (role === 'assistant' && model === 'deepseek' ? ' by-deepseek' : '') + (role === 'assistant' && model === 'gpt' ? ' by-gpt' : '');
   if (!animate) div.style.animation = 'none';
 
   const roleLabel = role === 'user'
     ? 'tú'
-    : (model === 'deepseek' ? 'kati · deepseek' : 'kati · claude');
+    : (model === 'deepseek' ? 'kati · deepseek' : model === 'gpt' ? 'kati · chatgpt' : 'kati · claude');
 
   div.innerHTML = `
     <div class="message-role">${roleLabel}</div>
@@ -1051,8 +1129,8 @@ function renderMessage(role, content, model, animate = true) {
 function showThinking() {
   const chatArea = document.getElementById('chatArea');
   const div = document.createElement('div');
-  div.className = 'message assistant' + (activeModel === 'deepseek' ? ' by-deepseek' : '');
-  const label = activeModel === 'deepseek' ? 'kati · deepseek' : 'kati · claude';
+  div.className = 'message assistant' + (activeModel === 'deepseek' ? ' by-deepseek' : '') + (activeModel === 'gpt' ? ' by-gpt' : '');
+  const label = activeModel === 'deepseek' ? 'kati · deepseek' : activeModel === 'gpt' ? 'kati · chatgpt' : 'kati · claude';
   div.innerHTML = `
     <div class="message-role">${label}</div>
     <div class="thinking">
