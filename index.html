@@ -539,6 +539,79 @@
   }
   .btn-action:hover { border-color: var(--red); color: var(--red); }
 
+  /* Camera */
+  .camera-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 20px 4px;
+    justify-content: center;
+  }
+
+  .btn-camera {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 7px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-camera:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-camera svg { width: 13px; height: 13px; }
+
+  /* Image preview */
+  .img-preview-wrap {
+    display: none;
+    padding: 8px 20px 0;
+    position: relative;
+    justify-content: center;
+  }
+  .img-preview-wrap.show { display: flex; }
+
+  .img-preview {
+    max-height: 120px;
+    max-width: 200px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    object-fit: cover;
+  }
+
+  .btn-remove-img {
+    position: absolute;
+    top: 4px;
+    right: calc(50% - 108px);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--red);
+    border: none;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  /* Message image */
+  .message-img {
+    max-width: 200px;
+    max-height: 160px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    margin-bottom: 6px;
+    object-fit: cover;
+    display: block;
+  }
+
   /* Toast */
   .toast {
     position: fixed;
@@ -680,8 +753,25 @@
     </div>
   </div>
 
-  <!-- Voice -->
-  <div class="voice-container">
+  <!-- Image preview -->
+  <div class="img-preview-wrap" id="imgPreviewWrap">
+    <img class="img-preview" id="imgPreview" src="" alt="foto">
+    <button class="btn-remove-img" onclick="removeImage()" title="Quitar foto">×</button>
+  </div>
+
+  <!-- Camera row -->
+  <div class="camera-row">
+    <button class="btn-camera" onclick="openCamera()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+        <circle cx="12" cy="13" r="4"/>
+      </svg>
+      adjuntar foto
+    </button>
+  </div>
+
+  <!-- Hidden file input -->
+  <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none" onchange="handleImageSelected(event)">
     <div class="transcript-preview" id="transcriptPreview">—</div>
     <div class="orb-wrap">
       <button class="orb-btn" id="orbBtn" onclick="toggleListen()">
@@ -735,6 +825,8 @@ let recognition = null;
 let isListening = false;
 let isSpeaking  = false;
 let currentUtterance = null;
+let pendingImageBase64 = null; // base64 of pending image
+let pendingImageType   = null; // mime type
 
 // ─── Model colors ─────────────────────────────────────────
 const MODEL_CONFIG = {
@@ -776,7 +868,7 @@ window.addEventListener('load', () => {
 
   if (conversationHistory.length > 0) {
     document.getElementById('emptyState').style.display = 'none';
-    conversationHistory.forEach(msg => renderMessage(msg.role, msg.content, msg.model, false));
+    conversationHistory.forEach(msg => renderMessage(msg.role, msg.content, msg.model, false, msg.imageBase64, msg.imageType));
     scrollToBottom();
   }
 
@@ -866,6 +958,42 @@ function updateApiStatus(ok) {
   el.className = 'api-status ' + (ok ? 'ok' : 'err');
 }
 
+// ─── Camera ───────────────────────────────────────────────
+function openCamera() {
+  if (activeModel === 'deepseek') {
+    showToast('DeepSeek no soporta imágenes — usa Claude o ChatGPT');
+    return;
+  }
+  document.getElementById('cameraInput').click();
+}
+
+function handleImageSelected(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const dataUrl = ev.target.result;
+    pendingImageBase64 = dataUrl.split(',')[1];
+    pendingImageType   = file.type || 'image/jpeg';
+
+    // Show preview
+    document.getElementById('imgPreview').src = dataUrl;
+    document.getElementById('imgPreviewWrap').classList.add('show');
+  };
+  reader.readAsDataURL(file);
+
+  // Reset input so same file can be selected again
+  e.target.value = '';
+}
+
+function removeImage() {
+  pendingImageBase64 = null;
+  pendingImageType   = null;
+  document.getElementById('imgPreview').src = '';
+  document.getElementById('imgPreviewWrap').classList.remove('show');
+}
+
 // ─── Speech Recognition ───────────────────────────────────
 function initRecognition() {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -920,9 +1048,16 @@ async function sendMessage(text) {
   document.getElementById('emptyState').style.display = 'none';
 
   const model = activeModel;
-  conversationHistory.push({ role: 'user', content: text, model });
-  renderMessage('user', text, model);
+  const imageBase64 = pendingImageBase64;
+  const imageType   = pendingImageType;
+
+  // Add user message with optional image
+  conversationHistory.push({ role: 'user', content: text, model, imageBase64, imageType });
+  renderMessage('user', text, model, true, imageBase64, imageType);
   saveHistory();
+
+  // Clear pending image
+  removeImage();
 
   const thinkingEl = showThinking();
   setOrbState('thinking');
@@ -935,11 +1070,11 @@ async function sendMessage(text) {
     let reply;
 
     if (model === 'claude') {
-      reply = await callClaude(text);
+      reply = await callClaude(text, imageBase64, imageType);
     } else if (model === 'deepseek') {
       reply = await callDeepSeek(text);
     } else {
-      reply = await callGPT(text);
+      reply = await callGPT(text, imageBase64, imageType);
     }
 
     thinkingEl.remove();
@@ -958,11 +1093,22 @@ async function sendMessage(text) {
 }
 
 // ─── Claude API ───────────────────────────────────────────
-async function callClaude(text) {
+async function callClaude(text, imageBase64 = null, imageType = 'image/jpeg') {
   const messages = conversationHistory
     .slice(-20)
     .filter(m => m.role === 'user' || m.role === 'assistant')
-    .map(m => ({ role: m.role, content: m.content }));
+    .map(m => {
+      if (m.imageBase64 && m.role === 'user') {
+        return {
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: m.imageType || 'image/jpeg', data: m.imageBase64 } },
+            { type: 'text', text: m.content }
+          ]
+        };
+      }
+      return { role: m.role, content: m.content };
+    });
 
   const res = await fetch('/api/claude', {
     method: 'POST',
@@ -1013,13 +1159,24 @@ async function callDeepSeek(text) {
 }
 
 // ─── ChatGPT API ──────────────────────────────────────────
-async function callGPT(text) {
+async function callGPT(text, imageBase64 = null, imageType = 'image/jpeg') {
   const messages = [
     { role: 'system', content: systemPrompt },
     ...conversationHistory
       .slice(-20)
       .filter(m => m.role === 'user' || m.role === 'assistant')
-      .map(m => ({ role: m.role, content: m.content }))
+      .map(m => {
+        if (m.imageBase64 && m.role === 'user') {
+          return {
+            role: 'user',
+            content: [
+              { type: 'text', text: m.content },
+              { type: 'image_url', image_url: { url: `data:${m.imageType || 'image/jpeg'};base64,${m.imageBase64}` } }
+            ]
+          };
+        }
+        return { role: m.role, content: m.content };
+      })
   ];
 
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -1108,7 +1265,7 @@ function setOrbState(state) {
   }
 }
 
-function renderMessage(role, content, model, animate = true) {
+function renderMessage(role, content, model, animate = true, imageBase64 = null, imageType = null) {
   const chatArea = document.getElementById('chatArea');
   const div = document.createElement('div');
   div.className = 'message ' + role + (role === 'assistant' && model === 'deepseek' ? ' by-deepseek' : '') + (role === 'assistant' && model === 'gpt' ? ' by-gpt' : '');
@@ -1118,9 +1275,13 @@ function renderMessage(role, content, model, animate = true) {
     ? 'tú'
     : (model === 'deepseek' ? 'kati · deepseek' : model === 'gpt' ? 'kati · chatgpt' : 'kati · claude');
 
+  const imgHtml = imageBase64
+    ? `<img class="message-img" src="data:${imageType || 'image/jpeg'};base64,${imageBase64}" alt="foto">`
+    : '';
+
   div.innerHTML = `
     <div class="message-role">${roleLabel}</div>
-    <div class="message-bubble">${escapeHtml(content)}</div>
+    <div class="message-bubble">${imgHtml}${escapeHtml(content)}</div>
   `;
   chatArea.appendChild(div);
   scrollToBottom();
