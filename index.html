@@ -788,6 +788,7 @@
   </div>
 
   <div class="bottom-actions">
+    <button class="btn-action" id="btnWake" onclick="toggleWakeMode()">○ manos libres</button>
     <button class="btn-action" onclick="clearChat()">limpiar chat</button>
     <button class="btn-action" onclick="stopSpeaking()">detener voz</button>
   </div>
@@ -873,6 +874,13 @@ window.addEventListener('load', () => {
   }
 
   initRecognition();
+
+  // Start wake listener if it was active before
+  updateWakeBtn();
+  if (wakeMode) {
+    startWakeListener();
+    setOrbState('wake');
+  }
 });
 
 // ─── Model switching ──────────────────────────────────────
@@ -995,6 +1003,13 @@ function removeImage() {
 }
 
 // ─── Speech Recognition ───────────────────────────────────
+// ─── Wake word ────────────────────────────────────────────
+let wakeMode = localStorage.getItem('kati_wake_mode') === 'true';
+let wakeWord = localStorage.getItem('kati_wake_word') || 'kati';
+let wakeRecognition = null;
+let isWakeListening = false;
+let isCapturing = false;
+
 function initRecognition() {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) { showToast('Tu navegador no soporta reconocimiento de voz'); return; }
@@ -1005,12 +1020,18 @@ function initRecognition() {
   recognition.continuous = false;
   recognition.maxAlternatives = 1;
 
-  recognition.onstart  = () => { isListening = true;  setOrbState('listening'); };
+  recognition.onstart  = () => { isListening = true; isCapturing = true; setOrbState('listening'); };
   recognition.onerror  = (e) => {
-    isListening = false; setOrbState('idle');
+    isListening = false; isCapturing = false;
+    setOrbState(wakeMode ? 'wake' : 'idle');
     if (e.error !== 'no-speech' && e.error !== 'aborted') showToast('Micrófono: ' + e.error);
+    if (wakeMode) setTimeout(startWakeListener, 800);
   };
-  recognition.onend    = () => { isListening = false; if (!isSpeaking) setOrbState('idle'); };
+  recognition.onend = () => {
+    isListening = false; isCapturing = false;
+    if (!isSpeaking) setOrbState(wakeMode ? 'wake' : 'idle');
+    if (wakeMode && !isSpeaking) setTimeout(startWakeListener, 500);
+  };
 
   recognition.onresult = (e) => {
     let interim = '', final = '';
@@ -1024,6 +1045,99 @@ function initRecognition() {
   };
 }
 
+function initWakeRecognition() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return;
+  wakeRecognition = new SR();
+  wakeRecognition.lang = lang;
+  wakeRecognition.interimResults = true;
+  wakeRecognition.continuous = false;
+  wakeRecognition.maxAlternatives = 3;
+
+  wakeRecognition.onstart  = () => { isWakeListening = true; };
+  wakeRecognition.onerror  = () => {
+    isWakeListening = false;
+    if (wakeMode && !isListening && !isSpeaking) setTimeout(startWakeListener, 1000);
+  };
+  wakeRecognition.onend = () => {
+    isWakeListening = false;
+    if (wakeMode && !isListening && !isSpeaking) setTimeout(startWakeListener, 300);
+  };
+  wakeRecognition.onresult = (e) => {
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const t = e.results[i][0].transcript.toLowerCase().trim();
+      if (containsWakeWord(t)) {
+        wakeRecognition.stop();
+        flashWake();
+        setTimeout(() => { if (!isListening && !isSpeaking) startCapture(); }, 350);
+        return;
+      }
+    }
+  };
+}
+
+function containsWakeWord(text) {
+  const w = wakeWord.toLowerCase();
+  const vars = [w, w.replace('k','c'), w+'i', w+'y', 'oye '+w, 'hey '+w, 'ey '+w];
+  return vars.some(v => text.includes(v));
+}
+
+function startWakeListener() {
+  if (!wakeMode || isListening || isSpeaking || isWakeListening) return;
+  if (!wakeRecognition) initWakeRecognition();
+  wakeRecognition.lang = lang;
+  try { wakeRecognition.start(); } catch(e) {}
+}
+
+function stopWakeListener() {
+  if (wakeRecognition) { try { wakeRecognition.stop(); } catch(e) {} }
+  isWakeListening = false;
+}
+
+function startCapture() {
+  if (!activeKey()) return;
+  if (!recognition) initRecognition();
+  recognition.lang = lang;
+  try { recognition.start(); } catch(e) {}
+}
+
+function flashWake() {
+  const btn = document.getElementById('orbBtn');
+  btn.style.transition = 'transform 0.15s ease';
+  btn.style.transform = 'scale(1.18)';
+  setTimeout(() => { btn.style.transform = 'scale(1)'; }, 200);
+  setOrbState('listening');
+}
+
+function toggleWakeMode() {
+  wakeMode = !wakeMode;
+  localStorage.setItem('kati_wake_mode', wakeMode);
+  updateWakeBtn();
+  if (wakeMode) {
+    startWakeListener();
+    setOrbState('wake');
+    showToast('Manos libres ON — di "' + wakeWord + '"', false);
+  } else {
+    stopWakeListener();
+    setOrbState('idle');
+    showToast('Manos libres OFF', false);
+  }
+}
+
+function updateWakeBtn() {
+  const btn = document.getElementById('btnWake');
+  if (!btn) return;
+  if (wakeMode) {
+    btn.textContent = '● manos libres ON';
+    btn.style.borderColor = 'var(--green)';
+    btn.style.color = 'var(--green)';
+  } else {
+    btn.textContent = '○ manos libres';
+    btn.style.borderColor = 'var(--border)';
+    btn.style.color = 'var(--text-muted)';
+  }
+}
+
 function toggleListen() {
   if (!activeKey()) {
     document.getElementById('noApiOverlay').style.display = 'flex';
@@ -1031,11 +1145,10 @@ function toggleListen() {
   }
   if (isSpeaking) { stopSpeaking(); return; }
   if (isListening) {
-    recognition.stop(); setOrbState('idle');
+    recognition.stop(); setOrbState(wakeMode ? 'wake' : 'idle');
   } else {
-    if (!recognition) initRecognition();
-    recognition.lang = lang;
-    try { recognition.start(); } catch(e) {}
+    stopWakeListener();
+    startCapture();
   }
 }
 
@@ -1251,6 +1364,11 @@ function setOrbState(state) {
     status.classList.add('active');
     status.textContent = 'escuchando...';
     icon.innerHTML = micSVG;
+  } else if (state === 'wake') {
+    status.classList.add('active');
+    status.style.color = 'var(--green)';
+    status.textContent = 'di "' + wakeWord + '"...';
+    icon.innerHTML = micSVG;
   } else if (state === 'thinking') {
     status.textContent = 'pensando...';
     icon.innerHTML = micSVG;
@@ -1260,6 +1378,7 @@ function setOrbState(state) {
     status.textContent = 'toca para detener';
     icon.innerHTML = stopSVG;
   } else {
+    status.style.color = '';
     status.textContent = 'toca para hablar';
     icon.innerHTML = micSVG;
   }
