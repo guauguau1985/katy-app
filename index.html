@@ -58,7 +58,6 @@
     flex-direction: column;
   }
 
-  /* ── HEADER ── */
   .header {
     display: flex;
     align-items: center;
@@ -76,7 +75,6 @@
     flex-shrink: 0;
   }
 
-  /* ── MODEL SWITCHER ── */
   .model-switcher {
     display: flex;
     background: var(--surface);
@@ -84,7 +82,7 @@
     border-radius: 6px;
     overflow: hidden;
     flex: 1;
-    max-width: 220px;
+    max-width: 240px;
   }
 
   .model-btn {
@@ -95,35 +93,22 @@
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.06em;
-    padding: 7px 10px;
+    padding: 7px 6px;
     cursor: pointer;
     transition: all 0.2s;
     text-align: center;
     white-space: nowrap;
   }
 
-  .model-btn.active-claude {
-    background: var(--accent-glow);
-    color: var(--accent);
-    border-right: 1px solid rgba(200,169,110,0.2);
-  }
-
-  .model-btn.active-deepseek {
-    background: var(--teal-glow);
-    color: var(--teal);
-  }
-
-  .model-btn.active-gpt {
-    background: var(--green-gpt-glow);
-    color: var(--green-gpt);
-  }
+  .model-btn.active-claude { background: var(--accent-glow); color: var(--accent); }
+  .model-btn.active-deepseek { background: var(--teal-glow); color: var(--teal); }
+  .model-btn.active-gpt { background: var(--green-gpt-glow); color: var(--green-gpt); }
 
   .model-dot {
     display: inline-block;
-    width: 5px;
-    height: 5px;
+    width: 5px; height: 5px;
     border-radius: 50%;
-    margin-right: 5px;
+    margin-right: 4px;
     vertical-align: middle;
     position: relative;
     top: -1px;
@@ -162,7 +147,6 @@
   }
   .btn-settings:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* ── MODEL BANNER ── */
   .model-banner {
     display: flex;
     align-items: center;
@@ -175,38 +159,21 @@
     border-bottom: 1px solid var(--border);
     transition: all 0.3s ease;
   }
-
-  .model-banner.claude {
-    background: rgba(200,169,110,0.05);
-    color: rgba(200,169,110,0.6);
-  }
-
-  .model-banner.deepseek {
-    background: rgba(78,205,196,0.05);
-    color: rgba(78,205,196,0.6);
-  }
-
-  .model-banner.gpt {
-    background: rgba(16,163,127,0.05);
-    color: rgba(16,163,127,0.6);
-  }
+  .model-banner.claude  { background: rgba(200,169,110,0.05); color: rgba(200,169,110,0.6); }
+  .model-banner.deepseek{ background: rgba(78,205,196,0.05);  color: rgba(78,205,196,0.6); }
+  .model-banner.gpt     { background: rgba(16,163,127,0.05);  color: rgba(16,163,127,0.6); }
 
   .model-banner-dot {
     width: 5px; height: 5px;
     border-radius: 50%;
     animation: blinkDot 2s ease-in-out infinite;
   }
-
-  .model-banner.claude .model-banner-dot { background: var(--accent); }
+  .model-banner.claude   .model-banner-dot { background: var(--accent); }
   .model-banner.deepseek .model-banner-dot { background: var(--teal); }
-  .model-banner.gpt .model-banner-dot { background: var(--green-gpt); }
+  .model-banner.gpt      .model-banner-dot { background: var(--green-gpt); }
 
-  @keyframes blinkDot {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 1; }
-  }
+  @keyframes blinkDot { 0%,100%{opacity:.4} 50%{opacity:1} }
 
-  /* ── SETTINGS PANEL ── */
   .settings-panel {
     display: none;
     background: var(--surface);
@@ -219,11 +186,7 @@
   }
   .settings-panel.open { display: flex; }
 
-  .settings-section {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
+  .settings-section { display: flex; flex-direction: column; gap: 6px; }
 
   .settings-label {
     font-size: 9px;
@@ -231,10 +194,9 @@
     color: var(--text-muted);
     text-transform: uppercase;
   }
-
-  .settings-label.claude-label { color: rgba(200,169,110,0.6); }
+  .settings-label.claude-label   { color: rgba(200,169,110,0.6); }
   .settings-label.deepseek-label { color: rgba(78,205,196,0.6); }
-  .settings-label.gpt-label { color: rgba(16,163,127,0.6); }
+  .settings-label.gpt-label      { color: rgba(16,163,127,0.6); }
 
   .settings-input {
     background: var(--bg);
@@ -248,10 +210,9 @@
     outline: none;
     transition: border-color 0.2s;
   }
-  .settings-input:focus { border-color: var(--accent); }
-
+  .settings-input:focus          { border-color: var(--accent); }
   .settings-input.deepseek-input:focus { border-color: var(--teal); }
-  .settings-input.gpt-input:focus { border-color: var(--green-gpt); }
+  .settings-input.gpt-input:focus      { border-color: var(--green-gpt); }
 
   .settings-row { display: flex; gap: 10px; align-items: flex-end; }
   .settings-row .settings-input { flex: 1; }
@@ -266,16 +227,11 @@
     border-radius: 6px;
     cursor: pointer;
     white-space: nowrap;
-    letter-spacing: 0.05em;
     transition: opacity 0.2s;
   }
   .btn-save:hover { opacity: 0.85; }
 
-  .settings-divider {
-    height: 1px;
-    background: var(--border);
-    margin: 2px 0;
-  }
+  .settings-divider { height: 1px; background: var(--border); margin: 2px 0; }
 
   .system-prompt-area {
     background: var(--bg);
@@ -294,7 +250,6 @@
   }
   .system-prompt-area:focus { border-color: var(--accent); }
 
-  /* ── CHAT ── */
   .chat-area {
     flex: 1;
     overflow-y: auto;
@@ -307,28 +262,14 @@
   .chat-area::-webkit-scrollbar { width: 3px; }
   .chat-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-  .message {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    animation: fadeUp 0.3s ease;
-  }
+  .message { display: flex; flex-direction: column; gap: 3px; animation: fadeUp 0.3s ease; }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
-  .message-role {
-    font-size: 9px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
-  .message.user .message-role { color: var(--accent); opacity: 0.7; }
+  .message-role { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+  .message.user              .message-role { color: var(--accent); opacity: 0.7; }
   .message.assistant.by-deepseek .message-role { color: var(--teal); opacity: 0.7; }
-  .message.assistant.by-gpt .message-role { color: var(--green-gpt); opacity: 0.7; }
+  .message.assistant.by-gpt      .message-role { color: var(--green-gpt); opacity: 0.7; }
 
   .message-bubble {
     background: var(--surface);
@@ -339,7 +280,6 @@
     line-height: 1.65;
     color: var(--text);
   }
-
   .message.user .message-bubble {
     background: var(--accent-glow);
     border-color: rgba(200,169,110,0.2);
@@ -347,325 +287,150 @@
     align-self: flex-end;
     max-width: 85%;
   }
+  .message.assistant.by-deepseek .message-bubble { border-color: rgba(78,205,196,0.12); }
+  .message.assistant.by-gpt      .message-bubble { border-color: rgba(16,163,127,0.12); }
 
-  .message.assistant.by-deepseek .message-bubble {
-    border-color: rgba(78,205,196,0.12);
-  }
-
-  .message.assistant.by-gpt .message-bubble {
-    border-color: rgba(16,163,127,0.12);
-  }
-
-  /* Thinking */
   .thinking {
-    display: flex;
-    gap: 5px;
-    align-items: center;
+    display: flex; gap: 5px; align-items: center;
     padding: 13px 15px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 2px 12px 12px 12px;
     width: fit-content;
   }
-
   .thinking-dot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
+    width: 5px; height: 5px; border-radius: 50%;
     background: var(--active-color, var(--accent));
     opacity: 0.4;
     animation: pulse 1.2s ease-in-out infinite;
   }
-  .thinking-dot:nth-child(2) { animation-delay: 0.2s; }
-  .thinking-dot:nth-child(3) { animation-delay: 0.4s; }
+  .thinking-dot:nth-child(2){animation-delay:.2s}
+  .thinking-dot:nth-child(3){animation-delay:.4s}
+  @keyframes pulse{0%,100%{opacity:.2;transform:scale(.8)}50%{opacity:1;transform:scale(1.1)}}
 
-  @keyframes pulse {
-    0%, 100% { opacity: 0.2; transform: scale(0.8); }
-    50%       { opacity: 1;   transform: scale(1.1); }
-  }
-
-  /* Empty state */
   .empty-state {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 40px 24px;
-    text-align: center;
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 10px; padding: 40px 24px; text-align: center;
   }
+  .empty-title { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--accent); opacity: 0.5; }
+  .empty-sub   { font-size: 11px; color: var(--text-muted); line-height: 1.7; max-width: 240px; }
 
-  .empty-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 26px;
-    color: var(--accent);
-    opacity: 0.5;
-  }
-
-  .empty-sub {
-    font-size: 11px;
-    color: var(--text-muted);
-    line-height: 1.7;
-    max-width: 240px;
-  }
-
-  /* ── VOICE ZONE ── */
   .voice-container {
-    padding: 16px 20px 28px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
+    padding: 16px 20px 20px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
     border-top: 1px solid var(--border);
   }
 
   .transcript-preview {
-    font-size: 12px;
-    color: var(--text-muted);
-    height: 17px;
-    letter-spacing: 0.02em;
-    transition: color 0.2s;
-    text-align: center;
-    max-width: 280px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    font-size: 12px; color: var(--text-muted); height: 17px;
+    letter-spacing: 0.02em; transition: color 0.2s; text-align: center;
+    max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
   .transcript-preview.active { color: var(--accent); }
 
-  .orb-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  .orb-wrap { position: relative; display: flex; align-items: center; justify-content: center; }
 
-  .orb-ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid var(--accent);
-    opacity: 0;
-  }
-  .orb-ring-1 { width: 86px;  height: 86px; }
-  .orb-ring-2 { width: 106px; height: 106px; }
-  .orb-ring-3 { width: 126px; height: 126px; }
+  .orb-ring { position: absolute; border-radius: 50%; border: 1px solid var(--accent); opacity: 0; }
+  .orb-ring-1{width:86px;height:86px}
+  .orb-ring-2{width:106px;height:106px}
+  .orb-ring-3{width:126px;height:126px}
 
   .orb-btn {
-    width: 66px; height: 66px;
-    border-radius: 50%;
-    background: var(--surface);
-    border: 2px solid var(--border);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    position: relative;
-    z-index: 1;
-    outline: none;
-    -webkit-tap-highlight-color: transparent;
+    width: 66px; height: 66px; border-radius: 50%;
+    background: var(--surface); border: 2px solid var(--border);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s ease; position: relative; z-index: 1;
+    outline: none; -webkit-tap-highlight-color: transparent;
   }
-
   .orb-btn.listening {
     border-color: var(--orb-color, var(--accent));
     background: var(--orb-glow, var(--accent-glow));
     box-shadow: 0 0 24px var(--orb-glow, var(--accent-glow));
   }
-
-  .orb-btn.listening ~ .orb-ring {
-    opacity: 1;
-    border-color: var(--orb-color, var(--accent));
-  }
-  .orb-btn.listening ~ .orb-ring-1 { animation: ripple 1.8s ease-out infinite; }
-  .orb-btn.listening ~ .orb-ring-2 { animation: ripple 1.8s ease-out infinite 0.3s; }
-  .orb-btn.listening ~ .orb-ring-3 { animation: ripple 1.8s ease-out infinite 0.6s; }
-
+  .orb-btn.listening ~ .orb-ring { opacity: 1; border-color: var(--orb-color, var(--accent)); }
+  .orb-btn.listening ~ .orb-ring-1{animation:ripple 1.8s ease-out infinite}
+  .orb-btn.listening ~ .orb-ring-2{animation:ripple 1.8s ease-out infinite .3s}
+  .orb-btn.listening ~ .orb-ring-3{animation:ripple 1.8s ease-out infinite .6s}
   .orb-btn.speaking {
-    border-color: var(--green);
-    background: rgba(92,224,160,0.08);
+    border-color: var(--green); background: rgba(92,224,160,0.08);
     box-shadow: 0 0 24px rgba(92,224,160,0.1);
     animation: speakPulse 1s ease-in-out infinite;
   }
+  @keyframes ripple{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.4);opacity:0}}
+  @keyframes speakPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 
-  @keyframes ripple {
-    0%   { transform: scale(1);   opacity: 0.6; }
-    100% { transform: scale(1.4); opacity: 0;   }
-  }
-
-  @keyframes speakPulse {
-    0%, 100% { transform: scale(1); }
-    50%       { transform: scale(1.04); }
-  }
-
-  .orb-icon {
-    width: 24px; height: 24px;
-    color: var(--text-muted);
-    transition: color 0.2s;
-  }
-
+  .orb-icon { width: 24px; height: 24px; color: var(--text-muted); transition: color 0.2s; }
   .orb-btn.listening .orb-icon { color: var(--orb-color, var(--accent)); }
   .orb-btn.speaking  .orb-icon { color: var(--green); }
 
   .orb-status {
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    height: 14px;
-    transition: color 0.2s;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-muted); height: 14px; transition: color 0.2s;
   }
   .orb-status.active   { color: var(--orb-color, var(--accent)); }
   .orb-status.speaking { color: var(--green); }
 
-  /* Bottom actions */
-  .bottom-actions {
-    display: flex;
-    gap: 10px;
-    padding: 0 20px 20px;
-    justify-content: center;
-  }
-
-  .btn-action {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    padding: 6px 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-action:hover { border-color: var(--red); color: var(--red); }
-
-  /* Camera */
   .camera-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 20px 4px;
-    justify-content: center;
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 20px 4px; justify-content: center;
   }
-
   .btn-camera {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    padding: 7px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    background: none; border: 1px solid var(--border); color: var(--text-muted);
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em;
+    padding: 7px 16px; border-radius: 4px; cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; gap: 6px;
   }
   .btn-camera:hover { border-color: var(--accent); color: var(--accent); }
   .btn-camera svg { width: 13px; height: 13px; }
 
-  /* Image preview */
   .img-preview-wrap {
-    display: none;
-    padding: 8px 20px 0;
-    position: relative;
-    justify-content: center;
+    display: none; padding: 8px 20px 0;
+    position: relative; justify-content: center;
   }
   .img-preview-wrap.show { display: flex; }
-
-  .img-preview {
-    max-height: 120px;
-    max-width: 200px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    object-fit: cover;
-  }
-
+  .img-preview { max-height: 120px; max-width: 200px; border-radius: 8px; border: 1px solid var(--border); object-fit: cover; }
   .btn-remove-img {
-    position: absolute;
-    top: 4px;
-    right: calc(50% - 108px);
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--red);
-    border: none;
-    color: white;
-    font-size: 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
+    position: absolute; top: 4px; right: calc(50% - 108px);
+    width: 22px; height: 22px; border-radius: 50%; background: var(--red);
+    border: none; color: white; font-size: 12px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; line-height: 1;
   }
-
-  /* Message image */
   .message-img {
-    max-width: 200px;
-    max-height: 160px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    margin-bottom: 6px;
-    object-fit: cover;
-    display: block;
+    max-width: 200px; max-height: 160px; border-radius: 8px;
+    border: 1px solid var(--border); margin-bottom: 6px; object-fit: cover; display: block;
   }
 
-  /* Toast */
+  .bottom-actions {
+    display: flex; gap: 8px; padding: 0 20px 20px; justify-content: center; flex-wrap: wrap;
+  }
+  .btn-action {
+    background: none; border: 1px solid var(--border); color: var(--text-muted);
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em;
+    padding: 6px 12px; border-radius: 4px; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-action:hover { border-color: var(--red); color: var(--red); }
+
   .toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
+    position: fixed; bottom: 24px; left: 50%;
     transform: translateX(-50%) translateY(80px);
-    background: var(--surface);
-    border: 1px solid var(--red);
-    color: var(--red);
-    font-size: 12px;
-    padding: 9px 18px;
-    border-radius: 6px;
-    z-index: 100;
-    transition: transform 0.3s ease;
-    white-space: nowrap;
+    background: var(--surface); border: 1px solid var(--red);
+    color: var(--red); font-size: 12px; padding: 9px 18px;
+    border-radius: 6px; z-index: 100; transition: transform 0.3s ease; white-space: nowrap;
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
 
-  /* No API overlay */
   .no-api-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(10,10,15,0.93);
-    z-index: 50;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 32px;
+    position: fixed; inset: 0; background: rgba(10,10,15,0.93);
+    z-index: 50; display: flex; align-items: center; justify-content: center; padding: 32px;
   }
-
   .no-api-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 28px 24px;
-    max-width: 310px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px 24px; max-width: 310px;
+    text-align: center; display: flex; flex-direction: column; gap: 14px;
   }
-
-  .no-api-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 20px;
-    color: var(--accent);
-  }
-
-  .no-api-sub {
-    font-size: 11px;
-    color: var(--text-muted);
-    line-height: 1.75;
-  }
-
+  .no-api-title { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--accent); }
+  .no-api-sub   { font-size: 11px; color: var(--text-muted); line-height: 1.75; }
   .no-api-sub a { color: var(--accent); text-decoration: none; }
   .no-api-sub a.teal { color: var(--teal); }
 </style>
@@ -673,38 +438,25 @@
 <body>
 <div id="app">
 
-  <!-- Header -->
   <div class="header">
     <div class="logo">Kati</div>
-
-    <!-- Model switcher -->
     <div class="model-switcher">
-      <button class="model-btn active-claude" id="btnClaude" onclick="setModel('claude')">
-        <span class="model-dot"></span>Claude
-      </button>
-      <button class="model-btn" id="btnDeepseek" onclick="setModel('deepseek')">
-        <span class="model-dot"></span>DeepSeek
-      </button>
-      <button class="model-btn" id="btnGpt" onclick="setModel('gpt')">
-        <span class="model-dot"></span>ChatGPT
-      </button>
+      <button class="model-btn active-claude" id="btnClaude" onclick="setModel('claude')"><span class="model-dot"></span>Claude</button>
+      <button class="model-btn" id="btnDeepseek" onclick="setModel('deepseek')"><span class="model-dot"></span>Deep</button>
+      <button class="model-btn" id="btnGpt" onclick="setModel('gpt')"><span class="model-dot"></span>GPT</button>
     </div>
-
     <div class="header-right">
       <div class="api-status" id="apiStatus"></div>
       <button class="btn-settings" onclick="toggleSettings()">config</button>
     </div>
   </div>
 
-  <!-- Active model banner -->
   <div class="model-banner claude" id="modelBanner">
     <span class="model-banner-dot"></span>
     <span id="modelBannerText">claude · sonnet-4</span>
   </div>
 
-  <!-- Settings panel -->
   <div class="settings-panel" id="settingsPanel">
-
     <div class="settings-section">
       <div class="settings-label claude-label">API Key — Claude (Anthropic)</div>
       <div class="settings-row">
@@ -712,28 +464,26 @@
         <button class="btn-save" onclick="saveSettings()">guardar</button>
       </div>
     </div>
-
     <div class="settings-divider"></div>
-
     <div class="settings-section">
       <div class="settings-label deepseek-label">API Key — DeepSeek</div>
       <input type="password" class="settings-input deepseek-input" id="deepseekKeyInput" placeholder="sk-...">
     </div>
-
     <div class="settings-divider"></div>
-
     <div class="settings-section">
       <div class="settings-label gpt-label">API Key — ChatGPT (OpenAI)</div>
       <input type="password" class="settings-input gpt-input" id="gptKeyInput" placeholder="sk-...">
     </div>
-
     <div class="settings-divider"></div>
-
+    <div class="settings-section">
+      <div class="settings-label">Nombre de activación (wake word)</div>
+      <input type="text" class="settings-input" id="wakeWordInput" placeholder="kati">
+    </div>
+    <div class="settings-divider"></div>
     <div class="settings-section">
       <div class="settings-label">Contexto personal</div>
-      <textarea class="system-prompt-area" id="systemPromptInput" placeholder="Soy Katerine, vivo en Talca, trabajo en Lumi (app educativa React para niños)..."></textarea>
+      <textarea class="system-prompt-area" id="systemPromptInput" placeholder="Soy Katerine, vivo en Talca..."></textarea>
     </div>
-
     <div class="settings-section">
       <div class="settings-label">Idioma de voz</div>
       <select class="settings-input" id="langInput">
@@ -745,33 +495,19 @@
     </div>
   </div>
 
-  <!-- Chat -->
   <div class="chat-area" id="chatArea">
     <div class="empty-state" id="emptyState">
       <div class="empty-title">Kati</div>
-      <div class="empty-sub">Elige el modelo arriba y toca el micrófono para hablar.</div>
+      <div class="empty-sub">Di "<span id="emptyWakeWord">kati</span>" para empezar o toca el micrófono.</div>
     </div>
   </div>
 
-  <!-- Image preview -->
   <div class="img-preview-wrap" id="imgPreviewWrap">
     <img class="img-preview" id="imgPreview" src="" alt="foto">
-    <button class="btn-remove-img" onclick="removeImage()" title="Quitar foto">×</button>
+    <button class="btn-remove-img" onclick="removeImage()">×</button>
   </div>
 
-  <!-- Camera row -->
-  <div class="camera-row">
-    <button class="btn-camera" onclick="openCamera()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-        <circle cx="12" cy="13" r="4"/>
-      </svg>
-      adjuntar foto
-    </button>
-  </div>
-
-  <!-- Hidden file input -->
-  <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none" onchange="handleImageSelected(event)">
+  <div class="voice-container">
     <div class="transcript-preview" id="transcriptPreview">—</div>
     <div class="orb-wrap">
       <button class="orb-btn" id="orbBtn" onclick="toggleListen()">
@@ -784,28 +520,37 @@
       <div class="orb-ring orb-ring-2"></div>
       <div class="orb-ring orb-ring-3"></div>
     </div>
-    <div class="orb-status" id="orbStatus">toca para hablar</div>
+    <div class="orb-status" id="orbStatus">cargando...</div>
   </div>
+
+  <div class="camera-row">
+    <button class="btn-camera" onclick="openCamera()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+        <circle cx="12" cy="13" r="4"/>
+      </svg>
+      adjuntar foto
+    </button>
+  </div>
+  <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none" onchange="handleImageSelected(event)">
 
   <div class="bottom-actions">
     <button class="btn-action" id="btnWake" onclick="toggleWakeMode()">○ manos libres</button>
-    <button class="btn-action" onclick="clearChat()">limpiar chat</button>
+    <button class="btn-action" onclick="clearChat()">limpiar</button>
     <button class="btn-action" onclick="stopSpeaking()">detener voz</button>
   </div>
 </div>
 
-<!-- No API overlay -->
 <div class="no-api-overlay" id="noApiOverlay" style="display:none">
   <div class="no-api-card">
     <div class="no-api-title">Configura tus API Keys</div>
     <div class="no-api-sub">
-      Necesitas al menos una API Key.<br><br>
+      Necesitas al menos una.<br><br>
       <b style="color:var(--accent)">Claude:</b> <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a><br><br>
       <b style="color:var(--teal)">DeepSeek:</b> <a class="teal" href="https://platform.deepseek.com/api_keys" target="_blank">platform.deepseek.com</a><br><br>
-      <b style="color:var(--green-gpt)">ChatGPT:</b> <a style="color:var(--green-gpt)" href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a><br><br>
-      Pégalas en "config" arriba.
+      <b style="color:var(--green-gpt)">ChatGPT:</b> <a style="color:var(--green-gpt)" href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a>
     </div>
-    <button class="btn-save" onclick="document.getElementById('noApiOverlay').style.display='none'; openSettings()">ir a configuración</button>
+    <button class="btn-save" onclick="document.getElementById('noApiOverlay').style.display='none';openSettings()">ir a configuración</button>
   </div>
 </div>
 
@@ -813,42 +558,32 @@
 
 <script>
 // ─── State ────────────────────────────────────────────────
-let claudeKey    = localStorage.getItem('kati_claude_key') || '';
-let deepseekKey  = localStorage.getItem('kati_deepseek_key') || '';
-let gptKey       = localStorage.getItem('kati_gpt_key') || '';
+let claudeKey    = localStorage.getItem('kati_claude_key')    || '';
+let deepseekKey  = localStorage.getItem('kati_deepseek_key')  || '';
+let gptKey       = localStorage.getItem('kati_gpt_key')       || '';
 let systemPrompt = localStorage.getItem('kati_system_prompt') ||
   'Eres Kati, asistente personal de Katerine. Responde siempre en español, de forma clara y concisa. Ella vive en Talca, Chile. Trabaja en Lumi (app educativa PWA en React para niños chilenos) y en Lumiara (agencia de automatizaciones con n8n). Sé directa, útil y amigable.';
-let lang         = localStorage.getItem('kati_lang') || 'es-CL';
-let activeModel  = localStorage.getItem('kati_model') || 'claude'; // 'claude' | 'deepseek' | 'gpt'
+let lang        = localStorage.getItem('kati_lang')       || 'es-CL';
+let activeModel = localStorage.getItem('kati_model')      || 'claude';
 let conversationHistory = JSON.parse(localStorage.getItem('kati_history') || '[]');
 
-let recognition = null;
-let isListening = false;
-let isSpeaking  = false;
+let recognition      = null;
+let isListening      = false;
+let isSpeaking       = false;
 let currentUtterance = null;
-let pendingImageBase64 = null; // base64 of pending image
-let pendingImageType   = null; // mime type
+let pendingImageBase64 = null;
+let pendingImageType   = null;
 
-// ─── Model colors ─────────────────────────────────────────
+// ── Wake word — ON por defecto ─────────────────────────────
+let wakeMode = localStorage.getItem('kati_wake_mode') !== 'false';
+let wakeWord = localStorage.getItem('kati_wake_word') || 'kati';
+let wakeRecognition  = null;
+let isWakeListening  = false;
+
 const MODEL_CONFIG = {
-  claude: {
-    color: 'var(--accent)',
-    glow:  'var(--accent-glow)',
-    label: 'claude · sonnet-4',
-    bannerClass: 'claude',
-  },
-  deepseek: {
-    color: 'var(--teal)',
-    glow:  'var(--teal-glow)',
-    label: 'deepseek · chat',
-    bannerClass: 'deepseek',
-  },
-  gpt: {
-    color: 'var(--green-gpt)',
-    glow:  'var(--green-gpt-glow)',
-    label: 'chatgpt · gpt-4o',
-    bannerClass: 'gpt',
-  }
+  claude:   { color:'var(--accent)',    glow:'var(--accent-glow)',    label:'claude · sonnet-4', bannerClass:'claude'   },
+  deepseek: { color:'var(--teal)',      glow:'var(--teal-glow)',      label:'deepseek · chat',   bannerClass:'deepseek' },
+  gpt:      { color:'var(--green-gpt)', glow:'var(--green-gpt-glow)', label:'chatgpt · gpt-4o',  bannerClass:'gpt'      }
 };
 
 // ─── Init ─────────────────────────────────────────────────
@@ -857,7 +592,9 @@ window.addEventListener('load', () => {
   if (deepseekKey) document.getElementById('deepseekKeyInput').value = deepseekKey;
   if (gptKey)      document.getElementById('gptKeyInput').value      = gptKey;
   document.getElementById('systemPromptInput').value = systemPrompt;
-  document.getElementById('langInput').value = lang;
+  document.getElementById('langInput').value         = lang;
+  document.getElementById('wakeWordInput').value     = wakeWord;
+  document.getElementById('emptyWakeWord').textContent = wakeWord;
 
   applyModel(activeModel);
 
@@ -869,77 +606,50 @@ window.addEventListener('load', () => {
 
   if (conversationHistory.length > 0) {
     document.getElementById('emptyState').style.display = 'none';
-    conversationHistory.forEach(msg => renderMessage(msg.role, msg.content, msg.model, false, msg.imageBase64, msg.imageType));
+    conversationHistory.forEach(m => renderMessage(m.role, m.content, m.model, false, m.imageBase64, m.imageType));
     scrollToBottom();
   }
 
   initRecognition();
-
-  // Start wake listener if it was active before
   updateWakeBtn();
   if (wakeMode) {
-    startWakeListener();
+    setTimeout(startWakeListener, 600);
     setOrbState('wake');
+  } else {
+    setOrbState('idle');
   }
 });
 
-// ─── Model switching ──────────────────────────────────────
+// ─── Model ────────────────────────────────────────────────
 function setModel(model) {
   activeModel = model;
   localStorage.setItem('kati_model', model);
   applyModel(model);
-
-  // Check if we have the key for this model
-  const key = activeKey();
-  if (!key) {
-    openSettings();
-    const names = { claude: 'Claude', deepseek: 'DeepSeek', gpt: 'ChatGPT' };
-    showToast('Agrega la API Key de ' + names[model] + ' primero', true);
-  } else {
-    updateApiStatus(true);
-  }
+  if (!activeKey()) { openSettings(); showToast('Agrega la API Key de ' + {claude:'Claude',deepseek:'DeepSeek',gpt:'ChatGPT'}[model] + ' primero'); }
+  else updateApiStatus(true);
 }
 
 function applyModel(model) {
   const cfg = MODEL_CONFIG[model];
-
-  // Update switcher buttons
-  const btnC = document.getElementById('btnClaude');
-  const btnD = document.getElementById('btnDeepseek');
-  const btnG = document.getElementById('btnGpt');
-  btnC.className = 'model-btn' + (model === 'claude'   ? ' active-claude'   : '');
-  btnD.className = 'model-btn' + (model === 'deepseek' ? ' active-deepseek' : '');
-  btnG.className = 'model-btn' + (model === 'gpt'      ? ' active-gpt'      : '');
-
-  // Update banner
+  document.getElementById('btnClaude').className   = 'model-btn' + (model==='claude'   ?' active-claude':'');
+  document.getElementById('btnDeepseek').className = 'model-btn' + (model==='deepseek' ?' active-deepseek':'');
+  document.getElementById('btnGpt').className      = 'model-btn' + (model==='gpt'      ?' active-gpt':'');
   const banner = document.getElementById('modelBanner');
   banner.className = 'model-banner ' + cfg.bannerClass;
   document.getElementById('modelBannerText').textContent = cfg.label;
-
-  // Update CSS orb colors
-  const orbBtn = document.getElementById('orbBtn');
-  orbBtn.style.setProperty('--orb-color', cfg.color);
-  orbBtn.style.setProperty('--orb-glow',  cfg.glow);
-
-  // Update thinking dot color
+  const orb = document.getElementById('orbBtn');
+  orb.style.setProperty('--orb-color', cfg.color);
+  orb.style.setProperty('--orb-glow',  cfg.glow);
   document.documentElement.style.setProperty('--active-color', cfg.color);
 }
 
 function activeKey() {
-  if (activeModel === 'claude')   return claudeKey;
-  if (activeModel === 'deepseek') return deepseekKey;
-  if (activeModel === 'gpt')      return gptKey;
-  return '';
+  return activeModel==='claude' ? claudeKey : activeModel==='deepseek' ? deepseekKey : gptKey;
 }
 
 // ─── Settings ─────────────────────────────────────────────
-function toggleSettings() {
-  document.getElementById('settingsPanel').classList.toggle('open');
-}
-
-function openSettings() {
-  document.getElementById('settingsPanel').classList.add('open');
-}
+function toggleSettings() { document.getElementById('settingsPanel').classList.toggle('open'); }
+function openSettings()   { document.getElementById('settingsPanel').classList.add('open'); }
 
 function saveSettings() {
   const ck = document.getElementById('claudeKeyInput').value.trim();
@@ -947,11 +657,19 @@ function saveSettings() {
   const gk = document.getElementById('gptKeyInput').value.trim();
   const sp = document.getElementById('systemPromptInput').value.trim();
   const l  = document.getElementById('langInput').value;
+  const ww = document.getElementById('wakeWordInput').value.trim().toLowerCase();
 
   if (ck) { claudeKey   = ck; localStorage.setItem('kati_claude_key',   ck); }
   if (dk) { deepseekKey = dk; localStorage.setItem('kati_deepseek_key', dk); }
   if (gk) { gptKey      = gk; localStorage.setItem('kati_gpt_key',      gk); }
   if (sp) { systemPrompt = sp; localStorage.setItem('kati_system_prompt', sp); }
+  if (ww) {
+    wakeWord = ww;
+    localStorage.setItem('kati_wake_word', ww);
+    document.getElementById('emptyWakeWord').textContent = ww;
+    // Reset wake recognition so it uses new word
+    wakeRecognition = null;
+  }
   lang = l; localStorage.setItem('kati_lang', l);
   if (recognition) recognition.lang = lang;
 
@@ -962,54 +680,37 @@ function saveSettings() {
 }
 
 function updateApiStatus(ok) {
-  const el = document.getElementById('apiStatus');
-  el.className = 'api-status ' + (ok ? 'ok' : 'err');
+  document.getElementById('apiStatus').className = 'api-status ' + (ok ? 'ok' : 'err');
 }
 
 // ─── Camera ───────────────────────────────────────────────
 function openCamera() {
-  if (activeModel === 'deepseek') {
-    showToast('DeepSeek no soporta imágenes — usa Claude o ChatGPT');
-    return;
-  }
+  if (activeModel === 'deepseek') { showToast('DeepSeek no soporta imágenes'); return; }
   document.getElementById('cameraInput').click();
 }
 
 function handleImageSelected(e) {
   const file = e.target.files[0];
   if (!file) return;
-
   const reader = new FileReader();
   reader.onload = (ev) => {
     const dataUrl = ev.target.result;
     pendingImageBase64 = dataUrl.split(',')[1];
     pendingImageType   = file.type || 'image/jpeg';
-
-    // Show preview
     document.getElementById('imgPreview').src = dataUrl;
     document.getElementById('imgPreviewWrap').classList.add('show');
   };
   reader.readAsDataURL(file);
-
-  // Reset input so same file can be selected again
   e.target.value = '';
 }
 
 function removeImage() {
-  pendingImageBase64 = null;
-  pendingImageType   = null;
+  pendingImageBase64 = null; pendingImageType = null;
   document.getElementById('imgPreview').src = '';
   document.getElementById('imgPreviewWrap').classList.remove('show');
 }
 
-// ─── Speech Recognition ───────────────────────────────────
-// ─── Wake word ────────────────────────────────────────────
-let wakeMode = localStorage.getItem('kati_wake_mode') === 'true';
-let wakeWord = localStorage.getItem('kati_wake_word') || 'kati';
-let wakeRecognition = null;
-let isWakeListening = false;
-let isCapturing = false;
-
+// ─── Recognition ──────────────────────────────────────────
 function initRecognition() {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) { showToast('Tu navegador no soporta reconocimiento de voz'); return; }
@@ -1020,17 +721,19 @@ function initRecognition() {
   recognition.continuous = false;
   recognition.maxAlternatives = 1;
 
-  recognition.onstart  = () => { isListening = true; isCapturing = true; setOrbState('listening'); };
-  recognition.onerror  = (e) => {
-    isListening = false; isCapturing = false;
+  recognition.onstart = () => { isListening = true; setOrbState('listening'); };
+
+  recognition.onerror = (e) => {
+    isListening = false;
     setOrbState(wakeMode ? 'wake' : 'idle');
     if (e.error !== 'no-speech' && e.error !== 'aborted') showToast('Micrófono: ' + e.error);
     if (wakeMode) setTimeout(startWakeListener, 800);
   };
+
   recognition.onend = () => {
-    isListening = false; isCapturing = false;
+    isListening = false;
     if (!isSpeaking) setOrbState(wakeMode ? 'wake' : 'idle');
-    if (wakeMode && !isSpeaking) setTimeout(startWakeListener, 500);
+    if (wakeMode && !isSpeaking) setTimeout(startWakeListener, 400);
   };
 
   recognition.onresult = (e) => {
@@ -1045,6 +748,7 @@ function initRecognition() {
   };
 }
 
+// ─── Wake word ────────────────────────────────────────────
 function initWakeRecognition() {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) return;
@@ -1054,8 +758,8 @@ function initWakeRecognition() {
   wakeRecognition.continuous = false;
   wakeRecognition.maxAlternatives = 3;
 
-  wakeRecognition.onstart  = () => { isWakeListening = true; };
-  wakeRecognition.onerror  = () => {
+  wakeRecognition.onstart = () => { isWakeListening = true; };
+  wakeRecognition.onerror = () => {
     isWakeListening = false;
     if (wakeMode && !isListening && !isSpeaking) setTimeout(startWakeListener, 1000);
   };
@@ -1106,7 +810,6 @@ function flashWake() {
   btn.style.transition = 'transform 0.15s ease';
   btn.style.transform = 'scale(1.18)';
   setTimeout(() => { btn.style.transform = 'scale(1)'; }, 200);
-  setOrbState('listening');
 }
 
 function toggleWakeMode() {
@@ -1139,20 +842,18 @@ function updateWakeBtn() {
 }
 
 function toggleListen() {
-  if (!activeKey()) {
-    document.getElementById('noApiOverlay').style.display = 'flex';
-    return;
-  }
+  if (!activeKey()) { document.getElementById('noApiOverlay').style.display='flex'; return; }
   if (isSpeaking) { stopSpeaking(); return; }
   if (isListening) {
-    recognition.stop(); setOrbState(wakeMode ? 'wake' : 'idle');
+    recognition.stop();
+    setOrbState(wakeMode ? 'wake' : 'idle');
   } else {
     stopWakeListener();
     startCapture();
   }
 }
 
-// ─── Send message ─────────────────────────────────────────
+// ─── Send ─────────────────────────────────────────────────
 async function sendMessage(text) {
   if (!text.trim()) return;
   if (recognition) recognition.stop();
@@ -1164,34 +865,25 @@ async function sendMessage(text) {
   const imageBase64 = pendingImageBase64;
   const imageType   = pendingImageType;
 
-  // Add user message with optional image
-  conversationHistory.push({ role: 'user', content: text, model, imageBase64, imageType });
+  conversationHistory.push({ role:'user', content:text, model, imageBase64, imageType });
   renderMessage('user', text, model, true, imageBase64, imageType);
   saveHistory();
-
-  // Clear pending image
   removeImage();
 
   const thinkingEl = showThinking();
   setOrbState('thinking');
 
-  const preview = document.getElementById('transcriptPreview');
-  preview.textContent = '—';
-  preview.classList.remove('active');
+  document.getElementById('transcriptPreview').textContent = '—';
+  document.getElementById('transcriptPreview').classList.remove('active');
 
   try {
     let reply;
-
-    if (model === 'claude') {
-      reply = await callClaude(text, imageBase64, imageType);
-    } else if (model === 'deepseek') {
-      reply = await callDeepSeek(text);
-    } else {
-      reply = await callGPT(text, imageBase64, imageType);
-    }
+    if (model === 'claude')    reply = await callClaude(text, imageBase64, imageType);
+    else if (model==='deepseek') reply = await callDeepSeek(text);
+    else                         reply = await callGPT(text, imageBase64, imageType);
 
     thinkingEl.remove();
-    conversationHistory.push({ role: 'assistant', content: reply, model });
+    conversationHistory.push({ role:'assistant', content:reply, model });
     renderMessage('assistant', reply, model);
     saveHistory();
     speak(reply);
@@ -1201,113 +893,75 @@ async function sendMessage(text) {
     setOrbState('idle');
     updateApiStatus(false);
     showToast('Error: ' + err.message);
-    console.error(err);
+    if (wakeMode) setTimeout(startWakeListener, 1000);
   }
 }
 
-// ─── Claude API ───────────────────────────────────────────
-async function callClaude(text, imageBase64 = null, imageType = 'image/jpeg') {
-  const messages = conversationHistory
-    .slice(-20)
-    .filter(m => m.role === 'user' || m.role === 'assistant')
+// ─── Claude ───────────────────────────────────────────────
+async function callClaude(text, imageBase64=null, imageType='image/jpeg') {
+  const messages = conversationHistory.slice(-20)
+    .filter(m => m.role==='user' || m.role==='assistant')
     .map(m => {
-      if (m.imageBase64 && m.role === 'user') {
-        return {
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: m.imageType || 'image/jpeg', data: m.imageBase64 } },
-            { type: 'text', text: m.content }
-          ]
-        };
-      }
-      return { role: m.role, content: m.content };
+      if (m.imageBase64 && m.role==='user') return {
+        role:'user',
+        content:[
+          {type:'image', source:{type:'base64', media_type:m.imageType||'image/jpeg', data:m.imageBase64}},
+          {type:'text', text:m.content}
+        ]
+      };
+      return {role:m.role, content:m.content};
     });
 
   const res = await fetch('/api/claude', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': claudeKey,
-      'anthropic-version': '2023-06-01',
-    },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1024,
-      system: systemPrompt,
-      messages
-    })
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':claudeKey,'anthropic-version':'2023-06-01'},
+    body: JSON.stringify({model:'claude-sonnet-4-5', max_tokens:1024, system:systemPrompt, messages})
   });
-
-  if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || 'Error Claude'); }
-  const data = await res.json();
-  return data.content[0].text;
+  if (!res.ok) { const e=await res.json(); throw new Error(e.error?.message||'Error Claude'); }
+  return (await res.json()).content[0].text;
 }
 
-// ─── DeepSeek API ─────────────────────────────────────────
+// ─── DeepSeek ─────────────────────────────────────────────
 async function callDeepSeek(text) {
   const messages = [
-    { role: 'system', content: systemPrompt },
-    ...conversationHistory
-      .slice(-20)
-      .filter(m => m.role === 'user' || m.role === 'assistant')
-      .map(m => ({ role: m.role, content: m.content }))
+    {role:'system', content:systemPrompt},
+    ...conversationHistory.slice(-20)
+      .filter(m=>m.role==='user'||m.role==='assistant')
+      .map(m=>({role:m.role, content:m.content}))
   ];
-
   const res = await fetch('https://api.deepseek.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + deepseekKey
-    },
-    body: JSON.stringify({
-      model: 'deepseek-chat',
-      max_tokens: 1024,
-      messages
-    })
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+deepseekKey},
+    body: JSON.stringify({model:'deepseek-chat', max_tokens:1024, messages})
   });
-
-  if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || 'Error DeepSeek'); }
-  const data = await res.json();
-  return data.choices[0].message.content;
+  if (!res.ok) { const e=await res.json(); throw new Error(e.error?.message||'Error DeepSeek'); }
+  return (await res.json()).choices[0].message.content;
 }
 
-// ─── ChatGPT API ──────────────────────────────────────────
-async function callGPT(text, imageBase64 = null, imageType = 'image/jpeg') {
+// ─── GPT ──────────────────────────────────────────────────
+async function callGPT(text, imageBase64=null, imageType='image/jpeg') {
   const messages = [
-    { role: 'system', content: systemPrompt },
-    ...conversationHistory
-      .slice(-20)
-      .filter(m => m.role === 'user' || m.role === 'assistant')
+    {role:'system', content:systemPrompt},
+    ...conversationHistory.slice(-20)
+      .filter(m=>m.role==='user'||m.role==='assistant')
       .map(m => {
-        if (m.imageBase64 && m.role === 'user') {
-          return {
-            role: 'user',
-            content: [
-              { type: 'text', text: m.content },
-              { type: 'image_url', image_url: { url: `data:${m.imageType || 'image/jpeg'};base64,${m.imageBase64}` } }
-            ]
-          };
-        }
-        return { role: m.role, content: m.content };
+        if (m.imageBase64 && m.role==='user') return {
+          role:'user',
+          content:[
+            {type:'text', text:m.content},
+            {type:'image_url', image_url:{url:`data:${m.imageType||'image/jpeg'};base64,${m.imageBase64}`}}
+          ]
+        };
+        return {role:m.role, content:m.content};
       })
   ];
-
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + gptKey
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o',
-      max_tokens: 1024,
-      messages
-    })
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+gptKey},
+    body: JSON.stringify({model:'gpt-4o', max_tokens:1024, messages})
   });
-
-  if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || 'Error ChatGPT'); }
-  const data = await res.json();
-  return data.choices[0].message.content;
+  if (!res.ok) { const e=await res.json(); throw new Error(e.error?.message||'Error ChatGPT'); }
+  return (await res.json()).choices[0].message.content;
 }
 
 // ─── TTS ──────────────────────────────────────────────────
@@ -1316,9 +970,9 @@ function speak(text) {
   stopSpeaking();
 
   const clean = text
-    .replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1')
-    .replace(/`(.*?)`/g, '$1').replace(/#{1,6}\s/g, '')
-    .replace(/\n\n/g, '. ').replace(/\n/g, ' ');
+    .replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1')
+    .replace(/`(.*?)`/g,'$1').replace(/#{1,6}\s/g,'')
+    .replace(/\n\n/g,'. ').replace(/\n/g,' ');
 
   currentUtterance = new SpeechSynthesisUtterance(clean);
   currentUtterance.lang   = lang;
@@ -1330,13 +984,25 @@ function speak(text) {
   const spanishVoice = voices.find(v => v.lang.startsWith('es'));
   if (spanishVoice) currentUtterance.voice = spanishVoice;
 
-  currentUtterance.onstart = () => { isSpeaking = true;  setOrbState('speaking'); };
+  currentUtterance.onstart = () => { isSpeaking = true; setOrbState('speaking'); };
+
+  // ← CLAVE: al terminar de hablar, reactiva escucha automáticamente
   currentUtterance.onend = () => {
-  isSpeaking = false;
-  setOrbState('idle');
-  setTimeout(() => { if (!isListening) startCapture(); }, 400);
-};
-  currentUtterance.onerror = () => { isSpeaking = false; setOrbState('idle'); };
+    isSpeaking = false;
+    if (wakeMode) {
+      setOrbState('wake');
+      setTimeout(startWakeListener, 400);
+    } else {
+      setOrbState('idle');
+      setTimeout(() => { if (!isListening) startCapture(); }, 400);
+    }
+  };
+
+  currentUtterance.onerror = () => {
+    isSpeaking = false;
+    setOrbState(wakeMode ? 'wake' : 'idle');
+    if (wakeMode) setTimeout(startWakeListener, 500);
+  };
 
   window.speechSynthesis.speak(currentUtterance);
 }
@@ -1344,7 +1010,8 @@ function speak(text) {
 function stopSpeaking() {
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   isSpeaking = false;
-  if (!isListening) setOrbState('idle');
+  if (!isListening) setOrbState(wakeMode ? 'wake' : 'idle');
+  if (wakeMode) setTimeout(startWakeListener, 400);
 }
 
 // ─── UI ───────────────────────────────────────────────────
@@ -1355,6 +1022,7 @@ function setOrbState(state) {
 
   btn.className    = 'orb-btn';
   status.className = 'orb-status';
+  status.style.color = '';
 
   const cfg = MODEL_CONFIG[activeModel];
   btn.style.setProperty('--orb-color', cfg.color);
@@ -1382,30 +1050,29 @@ function setOrbState(state) {
     status.textContent = 'toca para detener';
     icon.innerHTML = stopSVG;
   } else {
-    status.style.color = '';
     status.textContent = 'toca para hablar';
     icon.innerHTML = micSVG;
   }
 }
 
-function renderMessage(role, content, model, animate = true, imageBase64 = null, imageType = null) {
+function renderMessage(role, content, model, animate=true, imageBase64=null, imageType=null) {
   const chatArea = document.getElementById('chatArea');
   const div = document.createElement('div');
-  div.className = 'message ' + role + (role === 'assistant' && model === 'deepseek' ? ' by-deepseek' : '') + (role === 'assistant' && model === 'gpt' ? ' by-gpt' : '');
+  div.className = 'message ' + role +
+    (role==='assistant' && model==='deepseek' ? ' by-deepseek' : '') +
+    (role==='assistant' && model==='gpt'      ? ' by-gpt'      : '');
   if (!animate) div.style.animation = 'none';
 
-  const roleLabel = role === 'user'
-    ? 'tú'
-    : (model === 'deepseek' ? 'kati · deepseek' : model === 'gpt' ? 'kati · chatgpt' : 'kati · claude');
+  const roleLabel = role==='user' ? 'tú'
+    : model==='deepseek' ? 'kati · deepseek'
+    : model==='gpt'      ? 'kati · chatgpt'
+    : 'kati · claude';
 
   const imgHtml = imageBase64
-    ? `<img class="message-img" src="data:${imageType || 'image/jpeg'};base64,${imageBase64}" alt="foto">`
+    ? `<img class="message-img" src="data:${imageType||'image/jpeg'};base64,${imageBase64}" alt="foto">`
     : '';
 
-  div.innerHTML = `
-    <div class="message-role">${roleLabel}</div>
-    <div class="message-bubble">${imgHtml}${escapeHtml(content)}</div>
-  `;
+  div.innerHTML = `<div class="message-role">${roleLabel}</div><div class="message-bubble">${imgHtml}${escapeHtml(content)}</div>`;
   chatArea.appendChild(div);
   scrollToBottom();
 }
@@ -1413,33 +1080,23 @@ function renderMessage(role, content, model, animate = true, imageBase64 = null,
 function showThinking() {
   const chatArea = document.getElementById('chatArea');
   const div = document.createElement('div');
-  div.className = 'message assistant' + (activeModel === 'deepseek' ? ' by-deepseek' : '') + (activeModel === 'gpt' ? ' by-gpt' : '');
-  const label = activeModel === 'deepseek' ? 'kati · deepseek' : activeModel === 'gpt' ? 'kati · chatgpt' : 'kati · claude';
-  div.innerHTML = `
-    <div class="message-role">${label}</div>
-    <div class="thinking">
-      <div class="thinking-dot"></div>
-      <div class="thinking-dot"></div>
-      <div class="thinking-dot"></div>
-    </div>
-  `;
+  div.className = 'message assistant' +
+    (activeModel==='deepseek'?' by-deepseek':activeModel==='gpt'?' by-gpt':'');
+  const label = activeModel==='deepseek'?'kati · deepseek':activeModel==='gpt'?'kati · chatgpt':'kati · claude';
+  div.innerHTML = `<div class="message-role">${label}</div><div class="thinking"><div class="thinking-dot"></div><div class="thinking-dot"></div><div class="thinking-dot"></div></div>`;
   chatArea.appendChild(div);
   scrollToBottom();
   return div;
 }
 
-function scrollToBottom() {
-  const ca = document.getElementById('chatArea');
-  setTimeout(() => ca.scrollTop = ca.scrollHeight, 50);
-}
+function scrollToBottom() { setTimeout(() => { document.getElementById('chatArea').scrollTop = 9999; }, 50); }
 
 function escapeHtml(t) {
   return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
 }
 
 function clearChat() {
-  conversationHistory = [];
-  saveHistory();
+  conversationHistory = []; saveHistory();
   document.querySelectorAll('.message').forEach(m => m.remove());
   document.getElementById('emptyState').style.display = 'flex';
   stopSpeaking();
@@ -1449,7 +1106,7 @@ function saveHistory() {
   localStorage.setItem('kati_history', JSON.stringify(conversationHistory.slice(-50)));
 }
 
-function showToast(msg, isError = true) {
+function showToast(msg, isError=true) {
   const toast = document.getElementById('toast');
   toast.textContent = msg;
   toast.style.borderColor = isError ? 'var(--red)' : 'var(--green)';
@@ -1461,8 +1118,8 @@ function showToast(msg, isError = true) {
 if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => {};
 
 if ('serviceWorker' in navigator) {
-  const sw = `self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>clients.claim());self.addEventListener('fetch',e=>{if(e.request.url.includes('anthropic.com')||e.request.url.includes('deepseek.com'))return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});`;
-  const blob = new Blob([sw], { type: 'application/javascript' });
+  const sw = `self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>clients.claim());self.addEventListener('fetch',e=>{if(e.request.url.includes('anthropic.com')||e.request.url.includes('deepseek.com')||e.request.url.includes('openai.com'))return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});`;
+  const blob = new Blob([sw], {type:'application/javascript'});
   navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
 }
 </script>
