@@ -987,17 +987,16 @@ function speak(text) {
   currentUtterance.onstart = () => { isSpeaking = true; setOrbState('speaking'); };
 
   // ← CLAVE: al terminar de hablar, reactiva escucha automáticamente
-  currentUtterance.onend = () => {
-    isSpeaking = false;
-    if (wakeMode) {
-      setOrbState('wake');
-      setTimeout(startWakeListener, 400);
-    } else {
-      setOrbState('idle');
-      setTimeout(() => { if (!isListening) startCapture(); }, 400);
-    }
-  };
-
+currentUtterance.onend = () => {
+  isSpeaking = false;
+  if (wakeMode) {
+    setOrbState('wake');
+    setTimeout(startWakeListener, 400);
+  } else {
+    setOrbState('idle');
+    setTimeout(() => { if (!isListening) startCapture(); }, 400);
+  }
+};
   currentUtterance.onerror = () => {
     isSpeaking = false;
     setOrbState(wakeMode ? 'wake' : 'idle');
