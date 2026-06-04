@@ -1331,7 +1331,11 @@ function speak(text) {
   if (spanishVoice) currentUtterance.voice = spanishVoice;
 
   currentUtterance.onstart = () => { isSpeaking = true;  setOrbState('speaking'); };
-  currentUtterance.onend   = () => { isSpeaking = false; setOrbState('idle'); };
+  currentUtterance.onend = () => {
+  isSpeaking = false;
+  setOrbState('idle');
+  setTimeout(() => { if (!isListening) startCapture(); }, 400);
+};
   currentUtterance.onerror = () => { isSpeaking = false; setOrbState('idle'); };
 
   window.speechSynthesis.speak(currentUtterance);
